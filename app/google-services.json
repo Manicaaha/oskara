@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "932787423735",
+    "project_id": "crud-a8359",
+    "storage_bucket": "crud-a8359.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932787423735:android:cac6ca87450d091ae806f2",
+        "android_client_info": {
+          "package_name": "com.example.books_talk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "932787423735-dolv3q0ge5q25krm79o5icddc1qhureq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUl1PaZxb5_qYvF-UvkDZP_b3GK1o7XKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "932787423735-dolv3q0ge5q25krm79o5icddc1qhureq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932787423735:android:0abb44fa198689ebe806f2",
+        "android_client_info": {
+          "package_name": "com.example.oskarchatter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "932787423735-dolv3q0ge5q25krm79o5icddc1qhureq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUl1PaZxb5_qYvF-UvkDZP_b3GK1o7XKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "932787423735-dolv3q0ge5q25krm79o5icddc1qhureq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
