@@ -25,6 +25,11 @@ class MyAdapter (var posts: MutableList<Post>) :RecyclerView.Adapter<MyAdapter.M
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val username: TextView = holder.itemView.findViewById(R.id.username_text)
+        val description: TextView = holder.itemView.findViewById(R.id.desc_post)
+
+        username.text = posts[position].username
+        description.text = posts[position].content
     }
 
     override fun getItemCount(): Int {
