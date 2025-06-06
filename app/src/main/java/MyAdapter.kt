@@ -49,15 +49,17 @@ class MyAdapter(private var posts: MutableList<Post>) : RecyclerView.Adapter<MyA
 
         val images = post.imageUrls ?: emptyList()
         if (images.isNotEmpty()) {
+            imageView1.visibility = View.VISIBLE
             Picasso.get().load(images[0]).placeholder(R.drawable.baseline_add_photo_alternate_24).into(imageView1)
         } else {
-            imageView1.setImageResource(R.drawable.baseline_add_photo_alternate_24)
+            imageView1.visibility = View.GONE
         }
 
         if (images.size > 1) {
+            imageView2.visibility = View.VISIBLE
             Picasso.get().load(images[1]).placeholder(R.drawable.baseline_add_photo_alternate_24).into(imageView2)
         } else {
-            imageView2.setImageResource(R.drawable.baseline_add_photo_alternate_24)
+            imageView2.visibility = View.GONE
         }
 
         likeCountText.text = post.likeCount.toString()
