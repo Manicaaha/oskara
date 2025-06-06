@@ -1,3 +1,4 @@
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -5,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oskarchatter.R
+import com.example.oskarchatter.SingleComment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -33,9 +35,18 @@ class MyAdapter(private var posts: MutableList<Post>) : RecyclerView.Adapter<MyA
         val imageView2: ImageView = holder.itemView.findViewById(R.id.imageView12)
         val likeImage: ImageView = holder.itemView.findViewById(R.id.likeImageView)
         val likeCountText: TextView = holder.itemView.findViewById(R.id.textView11)
+        val commentImageView: ImageView = holder.itemView.findViewById(R.id.CommentImageView)
 
         usernameText.text = post.username
         descriptionText.text = post.content
+
+        commentImageView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, SingleComment::class.java)
+            // Optionally, pass the post ID or any data you want:
+            intent.putExtra("postId", post.id)
+            context.startActivity(intent)
+        }
 
         if (!post.avatarUrl.isNullOrEmpty()) {
             Picasso.get()

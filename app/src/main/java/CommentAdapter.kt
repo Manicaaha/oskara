@@ -1,23 +1,40 @@
+package com.example.oskarchatter
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.oskarchatter.R
+import com.squareup.picasso.Picasso
 
-class CommentAdapter (private var comments: MutableList<Comment>) : RecyclerView.Adapter<CommentAdapter.MyViewHolder>() {
+class CommentAdapter(private val comments: List<Comment>) :
+    RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
-    inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentAdapter.MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.post_item, parent, false)
-        return MyViewHolder(view)
+    class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val usernameTextView: TextView = view.findViewById(R.id.comment_username)
+        val contentTextView: TextView = view.findViewById(R.id.comment_content)
+        val avatarImageView: ImageView = view.findViewById(R.id.comment_avatar)
     }
 
-    override fun onBindViewHolder(holder: CommentAdapter.MyViewHolder, position: Int) {
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.comment_item, parent, false)
+        return CommentViewHolder(view)
     }
-    override fun getItemCount(): Int {
-        return comments.size
+
+    override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
+        val comment = comments[position]
+        holder.contentTextView.text = comment.content
+        holder.usernameTextView.text = comment.username
+        if (comment.avatarUrl.isNotEmpty()) {
+            Picasso.get().load(comment.avatarUrl)
+                .placeholder(R.drawable.default_avatar)
+                .into(holder.avatarImageView)
+        } else {
+            holder.avatarImageView.setImageResource(R.drawable.default_avatar)
+        }
     }
 
+    override fun getItemCount() = comments.size
 }
