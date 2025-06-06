@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/greyish"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/cancelText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Cancel"
-        android:textColor="@color/whiteish"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
@@ -39,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@id/titleText" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -93,8 +84,29 @@
         app:layout_constraintStart_toEndOf="@+id/userProfileImage"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
+
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/selectedImageView1"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/baseline_add_photo_alternate_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+
+    <ImageView
+        android:id="@+id/selectedImageView2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/baseline_add_photo_alternate_24"
+        app:layout_constraintEnd_toStartOf="@+id/selectedImageView1"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+
+    <ImageView
+        android:id="@+id/add_photo_ImageView"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="55dp"
@@ -103,15 +115,20 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextText"
         app:srcCompat="@drawable/baseline_add_photo_alternate_24" />
 
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+    <Button
+        android:id="@+id/submitPostButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText"
-        app:srcCompat="@drawable/baseline_camera_alt_24" />
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/black"
+        android:text="Add"
+        android:textColor="@color/whiteish"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_photo_ImageView" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
