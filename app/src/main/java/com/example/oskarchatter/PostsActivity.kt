@@ -83,8 +83,9 @@ class PostsActivity : AppCompatActivity() {
                     val content = document.getString("content") ?: ""
                     val avatarUrl = document.getString("avatarUrl")
                     val imageUrls = document.get("imageUrls") as? List<String> ?: emptyList()
+                    val userId = document.getString("userId") ?: ""
 
-                    posts.add(Post(postId, username, content, avatarUrl, imageUrls))
+                    posts.add(Post(postId, username, content, avatarUrl, imageUrls, userId = userId))
 
                 }
                 myAdapter.notifyDataSetChanged()

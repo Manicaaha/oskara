@@ -10,8 +10,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import java.util.UUID
@@ -46,7 +48,7 @@ class AddPostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_post)
 
-        db = FirebaseFirestore.getInstance()
+        db = Firebase.firestore
         auth = FirebaseAuth.getInstance()
         storage = FirebaseStorage.getInstance()
 
@@ -79,8 +81,6 @@ class AddPostActivity : AppCompatActivity() {
                     val avatarUrl = doc.getString("avatar")
                     if (!avatarUrl.isNullOrEmpty()) {
                         Picasso.get().load(avatarUrl)
-                            .placeholder(R.drawable.default_avatar)
-                            .error(R.drawable.default_avatar)
                             .into(profileImage)
                     }
                 }
@@ -163,12 +163,15 @@ class AddPostActivity : AppCompatActivity() {
         avatarUrl: String,
         imageUrls: List<String>
     ) {
+        val currentUser = auth.currentUser
+        val userId = currentUser?.uid ?: ""
         val post = hashMapOf(
             "username" to username,
             "content" to content,
             "avatarUrl" to avatarUrl,
             "imageUrls" to imageUrls,
-            "timestamp" to System.currentTimeMillis()
+            "timestamp" to System.currentTimeMillis(),
+            "userId" to userId
         )
 
         db.collection("posts").add(post)

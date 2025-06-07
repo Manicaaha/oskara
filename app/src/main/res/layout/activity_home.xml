@@ -47,11 +47,11 @@
             android:textSize="40dp" />
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/liked"
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            app:srcCompat="@drawable/baseline_build_circle_24" />
+            app:srcCompat="@drawable/outline_bookmark_heart_24" />
 
     </LinearLayout>
 

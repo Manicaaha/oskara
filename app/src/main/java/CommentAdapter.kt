@@ -27,43 +27,31 @@ class CommentAdapter(private val comments: List<Comment>) :
         val usernameTextView: TextView = holder.itemView.findViewById(R.id.comment_username)
         val contentTextView: TextView = holder.itemView.findViewById(R.id.comment_content)
         val avatarImageView: ImageView = holder.itemView.findViewById(R.id.comment_avatar)
-        val user = FirebaseAuth.getInstance().currentUser
         val comment = comments[position]
         contentTextView.text = comment.content
-        usernameTextView.text = comment.username
 
-        user?.email?.let {
-            val cleanedEmail = it.split(".").first()
-            val usernamePart = cleanedEmail.substringBefore("@")
-            val formattedUsername = usernamePart.replaceFirstChar { it.uppercaseChar() }
-            usernameTextView.text = formattedUsername
+        usernameTextView.text = comment.username
+        contentTextView.text = comment.content
+        val uid = comment.uid
+        if (uid.isNotEmpty()) {
+        db.collection("users").document(comment.uid)
+            .get()
+            .addOnSuccessListener { document ->
+                val avatarUrl = document.getString("avatar") ?: ""
+                if (avatarUrl.isNotEmpty()) {
+                    Picasso.get().load(avatarUrl).into(avatarImageView)
+                } else {
+                    avatarImageView.setImageResource(R.drawable.default_avatar)
+                }
+            }} else {
+            // fallback if uid empty
+            avatarImageView.setImageResource(R.drawable.default_avatar)
         }
 
-        val docRef = db.collection("users").document(auth.currentUser!!.uid)
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    val avatarUrl = document.getString("avatar")
-                    Log.d("COmmentAdapter", "Fetched avatar URL: $avatarUrl")
-                    if (!avatarUrl.isNullOrEmpty()) {
-                        Picasso.get().load(avatarUrl)
-                            .placeholder(R.drawable.default_avatar)
-                            .error(R.drawable.default_avatar)
-                            .into(avatarImageView)
-                    } else {
-                        Log.d("COmmentAdapter", "Avatar URL is null or empty")
-                        Picasso.get().load(R.drawable.default_avatar).into(avatarImageView)
-                    }
-                } else {
-                    Log.d("COmmentAdapter", "User document does not exist")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.d("COmmentAdapter", "get failed with ", exception)
-                Picasso.get().load(R.drawable.default_avatar).into(avatarImageView)
-            }
 
     }
 
-    override fun getItemCount() = comments.size
+    override fun getItemCount(): Int{
+        return comments.size
+    }
 }

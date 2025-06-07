@@ -1,7 +1,9 @@
 package com.example.oskarchatter
 
 data class Comment(
-    val content: String,
-    val username: String,
-    val avatarUrl: String
+    val uid: String = "",
+    val content: String ="",
+    val username: String ="",
+    val postID: String ="",
+    val avatarUrl: String = ""
 )

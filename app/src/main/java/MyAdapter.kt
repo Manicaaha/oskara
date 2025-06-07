@@ -4,10 +4,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.oskarchatter.R
 import com.example.oskarchatter.SingleComment
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
@@ -36,9 +38,34 @@ class MyAdapter(private var posts: MutableList<Post>) : RecyclerView.Adapter<MyA
         val likeImage: ImageView = holder.itemView.findViewById(R.id.likeImageView)
         val likeCountText: TextView = holder.itemView.findViewById(R.id.textView11)
         val commentImageView: ImageView = holder.itemView.findViewById(R.id.CommentImageView)
+        val removeImageView: ImageView = holder.itemView.findViewById(R.id.removeImg)
 
         usernameText.text = post.username
         descriptionText.text = post.content
+        val currentUser = auth.currentUser
+
+        if (currentUser != null && post.userId == currentUser.uid) {
+            removeImageView.visibility = View.VISIBLE
+        } else {
+            removeImageView.visibility = View.GONE
+        }
+
+        removeImageView.setOnClickListener {
+            val db = FirebaseFirestore.getInstance()
+            post.id?.let { postId ->
+                db.collection("posts").document(postId)
+                    .delete()
+                    .addOnSuccessListener {
+                        posts.removeAt(position)
+                        notifyItemRemoved(position)
+                        notifyItemRangeChanged(position, posts.size)
+                        Toast.makeText(holder.itemView.context, "Post deleted", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(holder.itemView.context, "Failed to delete post: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            }
+        }
 
         commentImageView.setOnClickListener {
             val context = holder.itemView.context
@@ -74,7 +101,7 @@ class MyAdapter(private var posts: MutableList<Post>) : RecyclerView.Adapter<MyA
 
         likeCountText.text = post.likeCount.toString()
 
-        val currentUser = auth.currentUser
+
         if (currentUser == null || post.id == null) {
             likeImage.setImageResource(R.drawable.outline_heart_plus_24)
             likeImage.isEnabled = false
@@ -112,6 +139,19 @@ class MyAdapter(private var posts: MutableList<Post>) : RecyclerView.Adapter<MyA
                 }
             }
         }
+        commentImageView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, SingleComment::class.java)
+            intent.putExtra("postId", post.id)
+            intent.putExtra("postUsername", post.username)
+            intent.putExtra("postContent", post.content)
+            intent.putExtra("postAvatarUrl", post.avatarUrl)
+            intent.putExtra("postImageUrl1", if (images.isNotEmpty()) images[0] else "")
+            intent.putExtra("postImageUrl2", if (images.size > 1) images[1] else "")
+            context.startActivity(intent)
+        }
+
+
     }
 
     override fun getItemCount(): Int {
