@@ -71,10 +71,15 @@ class MyAdapter(private var posts: MutableList<Post>) : RecyclerView.Adapter<MyA
                         posts.removeAt(position)
                         notifyItemRemoved(position)
                         notifyItemRangeChanged(position, posts.size)
-                        Toast.makeText(holder.itemView.context, "Post deleted", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(holder.itemView.context, "Post deleted", Toast.LENGTH_SHORT)
+                            .show()
                     }
                     .addOnFailureListener { e ->
-                        Toast.makeText(holder.itemView.context, "Failed to delete post: ${e.message}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            holder.itemView.context,
+                            "Failed to delete post: ${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
             }
         }
@@ -99,14 +104,16 @@ class MyAdapter(private var posts: MutableList<Post>) : RecyclerView.Adapter<MyA
         val images = post.imageUrls ?: emptyList()
         if (images.isNotEmpty()) {
             imageView1.visibility = View.VISIBLE
-            Picasso.get().load(images[0]).placeholder(R.drawable.baseline_add_photo_alternate_24).into(imageView1)
+            Picasso.get().load(images[0]).placeholder(R.drawable.baseline_add_photo_alternate_24)
+                .into(imageView1)
         } else {
             imageView1.visibility = View.GONE
         }
 
         if (images.size > 1) {
             imageView2.visibility = View.VISIBLE
-            Picasso.get().load(images[1]).placeholder(R.drawable.baseline_add_photo_alternate_24).into(imageView2)
+            Picasso.get().load(images[1]).placeholder(R.drawable.baseline_add_photo_alternate_24)
+                .into(imageView2)
         } else {
             imageView2.visibility = View.GONE
         }
@@ -131,42 +138,54 @@ class MyAdapter(private var posts: MutableList<Post>) : RecyclerView.Adapter<MyA
             likeImage.setImageResource(
                 if (isLiked) R.drawable.ic_heart_filled else R.drawable.outline_heart_plus_24
             )
-        }.addOnFailureListener {
-            likeImage.setImageResource(R.drawable.outline_heart_plus_24)
-        }
-
-        likeImage.setOnClickListener {
-            likeRef.get().addOnSuccessListener { snapshot ->
-                val isLiked = snapshot.exists()
-                if (isLiked) {
-                    likeRef.delete()
-                    postRef.update("likeCount", post.likeCount - 1)
-                    post.likeCount--
-                    notifyItemChanged(position)
+            postRef.get().addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val latestLikeCount = documentSnapshot.getLong("likeCount") ?: 0L
+                    likeCountText.text = latestLikeCount.toString()
+                    post.likeCount = latestLikeCount.toInt()
                 } else {
-                    likeRef.set(mapOf("userId" to userId, "postId" to postId))
-                    postRef.update("likeCount", post.likeCount + 1)
-                    post.likeCount++
-                    notifyItemChanged(position)
+                    likeCountText.text = "0"
+                    post.likeCount = 0
+                }
+            }.addOnFailureListener {
+                likeCountText.text = post.likeCount.toString()
+            }
+
+            likeImage.setOnClickListener {
+                likeRef.get().addOnSuccessListener { snapshot ->
+                    val isLiked = snapshot.exists()
+                    if (isLiked) {
+                        likeRef.delete()
+                        postRef.update("likeCount", post.likeCount - 1)
+                        post.likeCount--
+                        notifyItemChanged(position)
+                        likeCountText.text = post.likeCount.toString()
+                    } else {
+                        likeRef.set(mapOf("userId" to userId, "postId" to postId))
+                        postRef.update("likeCount", post.likeCount + 1)
+                        post.likeCount++
+                        notifyItemChanged(position)
+                        likeCountText.text = post.likeCount.toString()
+                    }
                 }
             }
+
+            commentImageView.setOnClickListener {
+                val context = holder.itemView.context
+                val intent = Intent(context, SingleComment::class.java)
+                intent.putExtra("postId", post.id)
+                intent.putExtra("postUsername", post.username)
+                intent.putExtra("postContent", post.content)
+                intent.putExtra("postAvatarUrl", post.avatarUrl)
+                intent.putExtra("postImageUrl1", if (images.isNotEmpty()) images[0] else "")
+                intent.putExtra("postImageUrl2", if (images.size > 1) images[1] else "")
+                context.startActivity(intent)
+            }
+
+
         }
-        commentImageView.setOnClickListener {
-            val context = holder.itemView.context
-            val intent = Intent(context, SingleComment::class.java)
-            intent.putExtra("postId", post.id)
-            intent.putExtra("postUsername", post.username)
-            intent.putExtra("postContent", post.content)
-            intent.putExtra("postAvatarUrl", post.avatarUrl)
-            intent.putExtra("postImageUrl1", if (images.isNotEmpty()) images[0] else "")
-            intent.putExtra("postImageUrl2", if (images.size > 1) images[1] else "")
-            context.startActivity(intent)
+    }
+        override fun getItemCount(): Int {
+            return posts.size
         }
-
-
     }
-
-    override fun getItemCount(): Int {
-        return posts.size
-    }
-}
