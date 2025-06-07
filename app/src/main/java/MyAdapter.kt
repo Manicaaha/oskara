@@ -36,6 +36,7 @@ class MyAdapter(private var posts: MutableList<Post>) : RecyclerView.Adapter<MyA
         val imageView1: ImageView = holder.itemView.findViewById(R.id.imageView11)
         val imageView2: ImageView = holder.itemView.findViewById(R.id.imageView12)
         val likeImage: ImageView = holder.itemView.findViewById(R.id.likeImageView)
+        val commentCountTextView: TextView = holder.itemView.findViewById(R.id.commentCountTextView)
         val likeCountText: TextView = holder.itemView.findViewById(R.id.textView11)
         val commentImageView: ImageView = holder.itemView.findViewById(R.id.CommentImageView)
         val removeImageView: ImageView = holder.itemView.findViewById(R.id.removeImg)
@@ -49,6 +50,17 @@ class MyAdapter(private var posts: MutableList<Post>) : RecyclerView.Adapter<MyA
         } else {
             removeImageView.visibility = View.GONE
         }
+
+        db.collection("comments")
+            .whereEqualTo("postID", post.id)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                val count = querySnapshot.size()
+                commentCountTextView.text = count.toString()
+            }
+            .addOnFailureListener {
+                commentCountTextView.text = "0"
+            }
 
         removeImageView.setOnClickListener {
             val db = FirebaseFirestore.getInstance()
