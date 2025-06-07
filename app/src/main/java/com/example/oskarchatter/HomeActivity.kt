@@ -3,6 +3,7 @@ package com.example.oskarchatter
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +21,7 @@ class HomeActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        val signOutButton: TextView = findViewById(R.id.logOutTextView)
+        val signOutButton: Button = findViewById(R.id.LogOutButton)
         val avatarImage: ImageView = findViewById(R.id.avatarImage)
         val goBack: ImageView = findViewById(R.id.goBackImageView)
         val posts: ImageView = findViewById(R.id.home_home)
