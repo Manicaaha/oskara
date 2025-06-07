@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.oskarchatter.Post
 import com.example.oskarchatter.R
 import com.example.oskarchatter.SingleComment
 import com.google.firebase.auth.ktx.auth

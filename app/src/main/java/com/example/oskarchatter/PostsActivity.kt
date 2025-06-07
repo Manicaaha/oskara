@@ -1,7 +1,6 @@
 package com.example.oskarchatter
 
 import MyAdapter
-import Post
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
