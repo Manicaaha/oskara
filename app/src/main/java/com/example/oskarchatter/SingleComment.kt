@@ -1,4 +1,5 @@
 package com.example.oskarchatter
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -29,6 +30,7 @@ class SingleComment : AppCompatActivity() {
         val contentTextView: TextView = findViewById(R.id.textView13)
         val postImageView1: ImageView = findViewById(R.id.img1)
         val postImageView2: ImageView = findViewById(R.id.img2)
+        val backarrow: ImageView = findViewById(R.id.backarrow)
 
         val postId = intent.getStringExtra("postId")
         val postUsername = intent.getStringExtra("postUsername") ?: "Unknown"
@@ -41,6 +43,12 @@ class SingleComment : AppCompatActivity() {
             Picasso.get().load(avatarUrl).into(avatarImageView)
         } else {
             avatarImageView.setImageResource(R.drawable.default_avatar)
+        }
+
+        backarrow.setOnClickListener {
+            val intent = Intent(this, PostsActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         userTextView.text = postUsername

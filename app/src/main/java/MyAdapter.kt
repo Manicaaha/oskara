@@ -136,7 +136,7 @@ class MyAdapter(private var posts: MutableList<Post>) : RecyclerView.Adapter<MyA
         likeRef.get().addOnSuccessListener { snapshot ->
             val isLiked = snapshot.exists()
             likeImage.setImageResource(
-                if (isLiked) R.drawable.ic_heart_filled else R.drawable.outline_heart_plus_24
+                if (isLiked) R.drawable.baseline_favorite_24 else R.drawable.outline_heart_plus_24
             )
             postRef.get().addOnSuccessListener { documentSnapshot ->
                 if (documentSnapshot.exists()) {

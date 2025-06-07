@@ -25,6 +25,7 @@ class HomeActivity : AppCompatActivity() {
         val goBack: ImageView = findViewById(R.id.goBackImageView)
         val posts: ImageView = findViewById(R.id.home_home)
         val add: ImageView = findViewById(R.id.home_add)
+        val liked: ImageView = findViewById(R.id.liked)
         val db = Firebase.firestore
 
         val user = FirebaseAuth.getInstance().currentUser
@@ -75,6 +76,10 @@ class HomeActivity : AppCompatActivity() {
 
         add.setOnClickListener{
             startActivity(Intent(this, AddPostActivity::class.java))
+            finish()
+        }
+        liked.setOnClickListener{
+            startActivity(Intent(this, LikedActivity::class.java))
             finish()
         }
 

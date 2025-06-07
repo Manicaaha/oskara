@@ -26,6 +26,7 @@ class PostsActivity : AppCompatActivity() {
         val gotoadd: TextView = findViewById(R.id.textView8)
         val username: TextView = findViewById(R.id.username_postActivity)
         val avatar2: ImageView = findViewById(R.id.userProfileImage3)
+        val searchPosts: ImageView = findViewById(R.id.search_post)
         val currentUser = FirebaseAuth.getInstance().currentUser
         val db = FirebaseFirestore.getInstance()
 
@@ -72,6 +73,10 @@ class PostsActivity : AppCompatActivity() {
         }
         gotoadd.setOnClickListener {
             startActivity(Intent(this, AddPostActivity::class.java))
+            finish()
+        }
+        searchPosts.setOnClickListener {
+            startActivity(Intent(this, SearchActivity::class.java))
             finish()
         }
         db.collection("posts").get()
