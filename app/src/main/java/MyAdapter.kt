@@ -43,7 +43,6 @@ class MyAdapter(private var posts: MutableList<Post>) : RecyclerView.Adapter<MyA
         commentImageView.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, SingleComment::class.java)
-            // Optionally, pass the post ID or any data you want:
             intent.putExtra("postId", post.id)
             context.startActivity(intent)
         }
